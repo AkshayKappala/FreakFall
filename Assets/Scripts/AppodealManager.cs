@@ -8,8 +8,8 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
 
     public static AppodealManager AppodealInstance;
 
-    public delegate void RewardedVideoFinished(string type);
-    public static event RewardedVideoFinished OnRewardedVideoComplete;
+    public delegate void RewardedVideoClosed(string type);
+    public static event RewardedVideoClosed OnRewardedVideoClose;
 
     public string PreviousInstruction;
 
@@ -20,6 +20,7 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
 
     void Awake()
     {
+        Appodeal.disableNetwork("yandex");
         if (AppodealInstance)
         {
             DestroyImmediate(gameObject);
@@ -88,11 +89,10 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
    
     public void onRewardedVideoClosed(bool finished)
     {
-        OnRewardedVideoComplete(PreviousInstruction);
-        //OnRewardedVideoExit(PreviousInstruction);
-       // if (UIManager.Instance)
-         //   UIManager.Instance.GiveRevive(PreviousInstruction);
-        Debug.Log("Rewarded video closed");
+        Debug.Log("reward closed at " + Time.realtimeSinceStartup);
+        OnRewardedVideoClose(PreviousInstruction);
+
+
     }
     #endregion
 
@@ -112,6 +112,7 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
 
     public void onRewardedVideoFinished(int amount, string name)
     {
+        Debug.Log("reward video finished at " + Time.realtimeSinceStartup);
     }
     #endregion
 

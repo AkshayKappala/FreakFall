@@ -370,8 +370,6 @@ namespace GooglePlayGames
         /// </param>
         public void Authenticate(Action<bool, string> callback)
         {
-            Debug.LogWarning("authenticate with 1 params called");
-
             Authenticate(callback, false);
         }
 
@@ -394,7 +392,6 @@ namespace GooglePlayGames
         /// </param>
         public void Authenticate(Action<bool> callback, bool silent)
         {
-            Debug.LogWarning("authenticate with 2 params called");
             Authenticate((bool success, string msg) => callback(success), silent);
         }
 
@@ -417,7 +414,6 @@ namespace GooglePlayGames
         /// </param>
         public void Authenticate(Action<bool, string> callback, bool silent)
         {
-            Debug.LogWarning("Authenticate called");
             // make a platform-specific Play Games client
             if (mClient == null)
             {
@@ -1220,11 +1216,6 @@ namespace GooglePlayGames
         /// </param>
         public void ShowLeaderboardUI(string leaderboardId)
         {
-            Debug.LogWarning("leaderboard test: "+leaderboardId);
-            Debug.LogWarning("leaderboard test: " + this);
-            Debug.LogWarning("leaderboard test mclient : " + mClient);
-            Debug.Log("leaderboardId: "+ leaderboardId);
-
             if (leaderboardId != null)
             {
                 leaderboardId = MapId(leaderboardId);

@@ -8,7 +8,7 @@ public class GooglePlayGamesManager : MonoBehaviour {
     string LeaderBoardsID = "CgkIxbbEzcEcEAIQAA";
     private void Awake()
     {
-        PlayGamesPlatform.Activate();
+        Debug.LogError("print");
         if (Instance)
         {
             Destroy(gameObject);
@@ -18,6 +18,12 @@ public class GooglePlayGamesManager : MonoBehaviour {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        PlayGamesPlatform.Activate();
+
+        Debug.Log("google authentication called");
+        Social.localUser.Authenticate((bool success) => {
+            Debug.Log("login status:" + success);
+        });
     }
     public void Start()
     {
@@ -86,7 +92,7 @@ public class GooglePlayGamesManager : MonoBehaviour {
         if (Social.localUser.authenticated)
         {
             Debug.LogWarning("LeaderBoardsID UI" + LeaderBoardsID);
-            GooglePlayGames.PlayGamesPlatform.Instance.ShowLeaderboardUI(LeaderBoardsID);
+            Social.ShowLeaderboardUI();
         }
         else
         {

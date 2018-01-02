@@ -239,7 +239,7 @@ public class GameController : MonoBehaviour
 
     public void AddCoins()
     {
-        PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + 500);
+        //PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + 500);
     }
 
     public void ShopButtonClick()
@@ -294,7 +294,7 @@ public class GameController : MonoBehaviour
     }
     private void OnEnable()
     {
-        AppodealManager.OnRewardedVideoComplete += GiveReward;
+        AppodealManager.OnRewardedVideoClose += GiveReward;
     }
 
     public void GiveReward(string str)

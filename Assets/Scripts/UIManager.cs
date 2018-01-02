@@ -50,19 +50,19 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        AppodealManager.OnRewardedVideoComplete += GiveRevive;
+        //AppodealManager.OnRewardedVideoClose += GiveRevive;
     }
 
     public void GiveRevive(string str)
     {
-        if (str == "revive")
+        /*if (str == "revive")
         {
             Debug.Log(str);
             Debug.Log("GiveRevive");
-            Debug.Log("GiveRevive");
-            CloseGameOverMenu();
+
             //GameObject.Find("BackgroundImage").transform.Translate(Vector3.down * BasicTileScript.StartVelocity * 2);
-        }
+        }*/
+        //Pause();
     }
 
     private void Start()
@@ -89,11 +89,11 @@ public class UIManager : MonoBehaviour
 
     public void Boost()
     {
-        if (PlayerPrefs.GetInt("Coins") >= 500)
+        if (PlayerPrefs.GetInt("Coins") >= 50)
         {
             TileSpeed += 200;
             BoostButton.SetActive(false);
-            PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") - 500);
+            PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") - 50);
         }
         else
         {
@@ -103,6 +103,7 @@ public class UIManager : MonoBehaviour
 
     public void Resume321()
     {
+        Debug.Log("Animation time scale fixed at "+Time.realtimeSinceStartup);
         Time.timeScale = 1;
     }
 
@@ -120,12 +121,21 @@ public class UIManager : MonoBehaviour
 
     public void CloseGameOverMenu()
     {
+        /*Debug.Log("Animation called at " + Time.realtimeSinceStartup);
+
+        //Resumer321.GetComponent<Animator>().SetTrigger("Call321");
+        //StartCoroutine(xyz());
+       // Debug.Log("Play321");
+        //resume();*/
         StartCoroutine(CloseGameoverMenuio());
-        //Time.timeScale = 1;
-        Resumer321.GetComponent<Animator>().SetTrigger("Call321");
-        Debug.Log("Play321");
+
         GameOverMenu.GetComponent<Animator>().Play("GameOverMenuClose");
     }
+
+    /*IEnumerator xyz()
+    {
+        yield return new WaitForSeconds(2);
+    }*/
 
     public void CloseGameOverMenu(int a)
     {
@@ -141,9 +151,6 @@ public class UIManager : MonoBehaviour
         PauseButton.SetActive(true);
         GameOverMenu.SetActive(false);
 
-
-        //Time.timeScale = 1;
-
         //StartCoroutine(CloseGameOverLayer());
     }
 
@@ -154,6 +161,7 @@ public class UIManager : MonoBehaviour
 
 
     }*/
+
 
     public void Pause()
     {
@@ -167,12 +175,19 @@ public class UIManager : MonoBehaviour
             GameOverLayer.SetActive(true);
         }
     }
+    public void Pause(int a)
+    {
+      
+            Time.timeScale = 0;
+            PauseButton.SetActive(false);
+            PauseMenu.SetActive(true);
+            GameOverLayer.SetActive(true);
+    }
 
     public void resume()
     {
         if (AudioListener)
             AudioListener.SetActive(true);
-        //Time.timeScale = 1;
         Resumer321.GetComponent<Animator>().SetTrigger("Call321");
         Debug.Log("Play 321");
 
@@ -257,6 +272,9 @@ public class UIManager : MonoBehaviour
     {
         AppodealManager.AppodealInstance.PreviousInstruction = "revive";
         AppodealManager.AppodealInstance.ShowRewardedAd();
+        CloseGameOverMenu();
+        PauseButton.SetActive(false);
+        Pause(1);
         //ADM.ShowRewardedAd();
     }
 
