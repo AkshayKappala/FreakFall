@@ -8,7 +8,7 @@ public class GooglePlayGamesManager : MonoBehaviour {
     string LeaderBoardsID = "CgkIxbbEzcEcEAIQAA";
     private void Awake()
     {
-        Debug.LogError("print");
+       // Debug.LogError("print");
         if (Instance)
         {
             Destroy(gameObject);

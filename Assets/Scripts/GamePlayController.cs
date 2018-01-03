@@ -42,14 +42,17 @@ public class GamePlayController : MonoBehaviour
     {
         BGMusic.GetComponent<AudioSource>().PlayDelayed(2);
     }
+
     public  void Start()
     {
+        UIManager.Instance.Resumer321.SetActive(true);
         UIManager.Instance.LoadingScreen0.SetActive(false);
         UIManager.Instance.BoostButton.SetActive(true);
         UIManager.Instance.NoCoinsForBoost.SetActive(false);
         SoundManagement();
         playBG();
-
+        UIManager.Instance.PauseButton.SetActive(true);
+        UIManager.Instance.PauseMenu.SetActive(false);
         UIManager.Instance.GameOverLayer.SetActive(false);
         UIManager.Instance.Wallet.SetActive(true);
         UIManager.Instance.ScoreWallet.SetActive(true);

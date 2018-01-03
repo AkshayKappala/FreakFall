@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.Runtime.InteropServices;
 
+
 public class GameController : MonoBehaviour
 {
     public static int mute;
@@ -98,6 +99,16 @@ public class GameController : MonoBehaviour
             UIButtonPopAnimations(Time.realtimeSinceStartup);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(shop.activeSelf)
+            {
+                ShopCloseButton();
+            }
+        }
+    }
     public void SetPopupInitialScales()
     {
         PlayButton.GetComponent<Animator>().enabled = false;
@@ -245,6 +256,7 @@ public class GameController : MonoBehaviour
     public void ShopButtonClick()
     {
         shop.SetActive(true);
+        PurchasePromptWindow.SetActive(false);
     }
 
     public void ShopCloseButton()

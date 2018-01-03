@@ -451,6 +451,7 @@ public class IAPDemo : MonoBehaviour, IStoreListener
         {
             // Now we're ready to initialize Unity IAP.
             UnityPurchasing.Initialize(this, builder);
+            Debug.Log("Purchasing initialized");
         };
 
         bool needExternalLogin = m_IsUnityChannelSelected;

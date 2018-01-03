@@ -50,19 +50,22 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //AppodealManager.OnRewardedVideoClose += GiveRevive;
+        AppodealManager.OnRewardedVideoClose += GiveRevive;
     }
 
     public void GiveRevive(string str)
     {
-        /*if (str == "revive")
+        if (str == "revive")
         {
             Debug.Log(str);
-            Debug.Log("GiveRevive");
-
+            // Debug.Log("GiveRevive");
             //GameObject.Find("BackgroundImage").transform.Translate(Vector3.down * BasicTileScript.StartVelocity * 2);
-        }*/
+            CloseGameOverMenu();
+            PauseButton.SetActive(false);
+            Pause(1);
+        }
         //Pause();
+
     }
 
     private void Start()
@@ -104,7 +107,12 @@ public class UIManager : MonoBehaviour
     public void Resume321()
     {
         Debug.Log("Animation time scale fixed at "+Time.realtimeSinceStartup);
-        Time.timeScale = 1;
+        if (!GameOverMenu.activeSelf && !PauseMenu.activeSelf)
+        {
+            Time.timeScale = 1;
+            if (!GameObject.Find("GameController"))
+                PauseButton.SetActive(true);
+        }
     }
 
     public void ShowGameOverMenu()
@@ -148,9 +156,13 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.21f);
         NoCoins.SetActive(false);
         NoAdsAvailable.SetActive(false);
-        PauseButton.SetActive(true);
+        //PauseButton.SetActive(true);
         GameOverMenu.SetActive(false);
-
+        if (!BoostButton.activeSelf)
+        {
+            Resumer321.GetComponent<Animator>().SetTrigger("Call321");
+            Debug.Log("Play 321");
+        }
         //StartCoroutine(CloseGameOverLayer());
     }
 
@@ -201,20 +213,27 @@ public class UIManager : MonoBehaviour
         if (AudioListener)
             AudioListener.SetActive(true);
         //StartCoroutine(CloseGameOverLayer());
-        StartCoroutine(resumeio());
+        StartCoroutine(resumeio(1));
         PauseMenu.GetComponent<Animator>().Play("PauseClose");
     }
 
     IEnumerator resumeio()
     {
         yield return new WaitForSecondsRealtime(0.2f);
-       
-        if(!GameObject.Find("GameController"))
-            PauseButton.SetActive(true);
+        /*if(!GameObject.Find("GameController"))
+            PauseButton.SetActive(true);*/
+        PauseMenu.SetActive(false);
+    }
+    IEnumerator resumeio(int a)
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+        /*
+         if(!GameObject.Find("GameController"))
+             PauseButton.SetActive(true);*/
         PauseMenu.SetActive(false);
     }
 
-    public void SoundToggle()
+        public void SoundToggle()
     {
         if(PlayerPrefs.GetInt("Soundpref")==1)
         {
@@ -250,6 +269,7 @@ public class UIManager : MonoBehaviour
         ScoreWallet.SetActive(false);
         Scoreboard.text = null;
         sethighscore();
+        Resumer321.SetActive(false);
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
@@ -272,9 +292,7 @@ public class UIManager : MonoBehaviour
     {
         AppodealManager.AppodealInstance.PreviousInstruction = "revive";
         AppodealManager.AppodealInstance.ShowRewardedAd();
-        CloseGameOverMenu();
-        PauseButton.SetActive(false);
-        Pause(1);
+
         //ADM.ShowRewardedAd();
     }
 
