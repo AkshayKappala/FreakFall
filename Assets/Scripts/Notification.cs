@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.SimpleAndroidNotifications
@@ -6,9 +7,16 @@ namespace Assets.SimpleAndroidNotifications
     public class Notification : MonoBehaviour
     {
         public static Notification Instance;
-        public int Time;
-        public string Title;
-        public string Message;
+        public List<NotificiationType> NotificationInstances;
+
+        [Serializable]
+        public class NotificiationType
+        {
+            public int Time;
+            public string Title;
+            public string Message;
+        }
+
          void Awake()
         {
             if (Instance)
@@ -23,7 +31,11 @@ namespace Assets.SimpleAndroidNotifications
         }
         private void Start()
         {
-            Notify(Time,Title,Message); 
+            CancelAll();
+            foreach (var notification in NotificationInstances)
+            {
+                Notify(notification.Time, notification. Title, notification. Message);
+            }
         }
       /*  public void ScheduleSimple()
         {
@@ -54,11 +66,11 @@ namespace Assets.SimpleAndroidNotifications
 
             NotificationManager.SendCustom(notificationParams);
         }
-
+        */
         public void CancelAll()
         {
             NotificationManager.CancelAll();
-        }*/
+        }
         void Notify(int time,string title,string message)
         {
             var notificationParams = new NotificationParams

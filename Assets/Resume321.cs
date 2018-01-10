@@ -7,6 +7,6 @@ public class Resume321 : MonoBehaviour
     public void Resume321go()
     {
         UIManager.Instance.Resume321();
-        UIManager.Instance.GameOverLayer.SetActive(false);
+       // UIManager.Instance.GameOverLayer.SetActive(false);
     }
 }

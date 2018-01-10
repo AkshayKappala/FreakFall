@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class Economy : MonoBehaviour
 {
     public Text ShowCoins;
+    private void Awake()
+    {   
+    }
     private void Update()
     {
         showcoins();
@@ -13,5 +16,6 @@ public class Economy : MonoBehaviour
     private void showcoins()
     {
         ShowCoins.text = PlayerPrefs.GetInt("Coins").ToString();
+        
     }
 }

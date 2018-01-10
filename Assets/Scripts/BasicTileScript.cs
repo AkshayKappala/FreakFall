@@ -27,7 +27,7 @@ public class BasicTileScript : MonoBehaviour
     }
     private void Start()
     {
-        StartVelocity = 6;
+        StartVelocity = 7;
         startvelocityref = StartVelocity;
         //float position = this.gameObject.transform.position.x;
     }
@@ -37,15 +37,15 @@ public class BasicTileScript : MonoBehaviour
         //  StartVelocity =startvelocityref+0.01f* UIManager.Instance.score;
         if(UIManager.Instance.TileSpeed <= 600)
         {
-            StartVelocity = startvelocityref + startvelocityref * 0.002f * UIManager.Instance.TileSpeed;
+            StartVelocity = startvelocityref + 0.01f * UIManager.Instance.TileSpeed;
             transform.Translate(Vector3.down * Time.deltaTime * StartVelocity);
         }
         else
         {
-            StartVelocity = 13.2f;
-            transform.Translate(Vector3.down * Time.deltaTime * 13.2f);
+            StartVelocity = 13;
+            transform.Translate(Vector3.down * Time.deltaTime * 13);
         }
-
+      //  Debug.Log(StartVelocity);
 	}
     private void FixedUpdate()
     {
@@ -63,6 +63,7 @@ public class BasicTileScript : MonoBehaviour
             {
                 Instantiate(Resources.Load("PoofBlack"), this.transform.position, Quaternion.identity);
                 UIManager.Instance.ShowGameOverMenu();
+                Destroy(this.gameObject);
             }
             else if (Tiletype == TileType.Green)
             {

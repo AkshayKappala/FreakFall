@@ -12,9 +12,9 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
     public static event RewardedVideoClosed OnRewardedVideoClose;
 
     public string PreviousInstruction;
-
+   
     int InterstitialIterator = 0;
-    public int InterstitialVideoInterval = 4;
+    public int InterstitialVideoInterval = 3;
     public int RewardCoins = 200;
 
 
@@ -36,7 +36,7 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
     {
         string appKey = "93919d9c6baab5864bfdab3f73122d50a4454c4e9b1b2a63";
         Appodeal.disableLocationPermissionCheck();
-        Appodeal.setTesting(true);
+       // Appodeal.setTesting(true);
         Appodeal.initialize(appKey, Appodeal.INTERSTITIAL | Appodeal.BANNER | Appodeal.REWARDED_VIDEO);
         Appodeal.setRewardedVideoCallbacks(this);
         Appodeal.setBannerCallbacks(this);
@@ -44,10 +44,10 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
 
     public void ShowBannerAd()
     {
-        if (Appodeal.isLoaded(Appodeal.BANNER))
-        {
-            Appodeal.show(Appodeal.BANNER_TOP);
-        }
+        //if (Appodeal.isLoaded(Appodeal.BANNER))
+        //{
+        //    Appodeal.show(Appodeal.BANNER_TOP);
+        //}
     }
 
     public void HideBannerAd()
@@ -64,13 +64,20 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
             Appodeal.show(Appodeal.INTERSTITIAL);
             InterstitialIterator = 0;
         }
+        else
+        {
+
+        }
     }
 
     public void ShowRewardedAd()
     {
+
         if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO))
         {
-            Appodeal.show(Appodeal.REWARDED_VIDEO);
+           
+                Appodeal.show(Appodeal.REWARDED_VIDEO);
+            
         }
         else
         {
@@ -108,11 +115,15 @@ public class AppodealManager : MonoBehaviour, IRewardedVideoAdListener, IBannerA
     public void onInterstitialFailedToLoad() { Debug.Log("Interstitial video failed to load"); }
     public void onInterstitialShown() { Debug.Log("Interstitial video shown"); }
     public void onInterstitialClicked() { Debug.Log("Interstitial video clicked"); }
-    public void onInterstitialClosed() { Debug.Log("Interstitial video closed"); }
+    public void onInterstitialClosed()
+    {
+        Debug.Log("Interstitial video closed");
+    }
 
     public void onRewardedVideoFinished(int amount, string name)
     {
         Debug.Log("reward video finished at " + Time.realtimeSinceStartup);
+        Time.timeScale = 1;
     }
     #endregion
 

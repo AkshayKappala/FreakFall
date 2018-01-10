@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GroundScript : MonoBehaviour
 {
     public GameObject Ground;
-    public GameObject image;
     public void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait; 

@@ -34,7 +34,12 @@ public class GameController : MonoBehaviour
 
     public GameObject NoAdsAvailable;
 
+    public Button SuitBootThemeButton;
+    public Button TribalThemeButton;
+
     public GameObject PurchasePromptWindow;
+
+    int Counter;
 
     //public AppodealManager ADM;
 
@@ -47,6 +52,15 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+        if (PlayerPrefs.GetInt("Coins") <= 0)
+        {
+            if (PlayerPrefs.GetInt("First") <= 0)
+            {
+                PlayerPrefs.SetInt("Coins", 300);
+                PlayerPrefs.SetInt("First", 1);
+            }
+        }
+        Debug.LogError(PlayerPrefs.GetInt("Coins"));
         PopupMaxTime = 100;
         if(Time.realtimeSinceStartup<5)
             SetPopupInitialScales();
@@ -62,9 +76,12 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
-        //ADM = GameObject.Find("AppodealManager").GetComponent<AppodealManager>();
 
-        if(UIManager.Instance)
+        //suit boot theme interactivity disabling
+        SuitBootThemeButton.interactable = false;
+        TribalThemeButton.interactable = false;
+
+        if (UIManager.Instance)
             UIManager.Instance.LoadingScreen0.SetActive(false);
         LoadingScreen.SetActive(false);
         if (GameObject.Find("UIManager"))
@@ -91,6 +108,7 @@ public class GameController : MonoBehaviour
         MMHighScore.text = "High Score : " + PlayerPrefs.GetInt("HighScore").ToString();
         if(Time.realtimeSinceStartup<5)
             IconsPop();
+        Time.timeScale = 1;
     }
 
     private void FixedUpdate()
@@ -105,7 +123,16 @@ public class GameController : MonoBehaviour
         {
             if(shop.activeSelf)
             {
-                ShopCloseButton();
+                if(PurchasePromptWindow.activeSelf)
+                    PurchasePromptWindow.SetActive(false);
+                else
+                    ShopCloseButton();
+            }
+            else if(!shop.activeSelf && !Tutorial1.activeSelf && !Tutorial2.activeSelf && !Tutorial3.activeSelf)
+            {
+                Debug.Log("quitting application");
+                Application.Quit();
+
             }
         }
     }
@@ -141,7 +168,10 @@ public class GameController : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("isUnlocked") == 5)
         {
+            SuitBootThemeButton.interactable = true;
+            TribalThemeButton.interactable = true;
             ThemeLocker.SetActive(false);
+
         }
     }
 
@@ -163,6 +193,12 @@ public class GameController : MonoBehaviour
     {
         GooglePlayGamesManager.Instance.DisplayLB();
     }
+
+   /* public void devopUnlockCharacters()
+    {
+        PlayerPrefs.SetInt("isUnlocked", 5);
+        GameObject.Find("ThemeLocker").SetActive(false);
+    }*/
 
     public void SoundToggle()
     {
@@ -248,9 +284,9 @@ public class GameController : MonoBehaviour
         readyForDoubleTap = false;
     }
 
-    public void AddCoins()
+    public void AddCoins1()
     {
-        //PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + 500);
+        PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + 500);
     }
 
     public void ShopButtonClick()
@@ -299,8 +335,16 @@ public class GameController : MonoBehaviour
         DevopTools.SetActive(false);
     }
 
+    public void LOL()
+    {
+        PlayerPrefs.SetInt("HighScore", PlayerPrefs.GetInt("HighScore") + 382);
+    }
+
     public void WatchAd()
     {
+        Counter = 0;
+        Debug.Log("Counter Reset");
+
         AppodealManager.AppodealInstance.PreviousInstruction = "reward";
         AppodealManager.AppodealInstance.ShowRewardedAd();
     }
@@ -309,13 +353,23 @@ public class GameController : MonoBehaviour
         AppodealManager.OnRewardedVideoClose += GiveReward;
     }
 
+    private void OnDisable()
+    {
+        AppodealManager.OnRewardedVideoClose -= GiveReward;
+    }
+
     public void GiveReward(string str)
     {
         if (str == "reward")
         {
-            Debug.Log(str);
-            Debug.Log("GiveReward");
-            PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + 200);
+            if (Counter == 0)
+            {
+                Debug.Log(str);
+                Debug.Log("GiveReward");
+                Debug.Log("counter value is:"+Counter);
+                PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + 200);
+                Counter++;
+            }
         }
     }
 

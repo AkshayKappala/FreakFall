@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     public GameObject NoAdsAvailable;
     private GameObject AudioListener;
     public GameObject Resumer321;
+    public GameObject ReviveButton;
+
     public int score = 0;
     public Text Scoreboard;
     public Text SoundOnOffText;
@@ -53,10 +55,17 @@ public class UIManager : MonoBehaviour
         AppodealManager.OnRewardedVideoClose += GiveRevive;
     }
 
+    private void OnDisable()
+    {
+        AppodealManager.OnRewardedVideoClose -= GiveRevive;
+
+    }
+
     public void GiveRevive(string str)
     {
         if (str == "revive")
         {
+            Debug.Log("Counter reset");
             Debug.Log(str);
             // Debug.Log("GiveRevive");
             //GameObject.Find("BackgroundImage").transform.Translate(Vector3.down * BasicTileScript.StartVelocity * 2);
@@ -94,7 +103,7 @@ public class UIManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("Coins") >= 50)
         {
-            TileSpeed += 200;
+            TileSpeed += 300;
             BoostButton.SetActive(false);
             PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") - 50);
         }
@@ -112,7 +121,9 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1;
             if (!GameObject.Find("GameController"))
                 PauseButton.SetActive(true);
+            GameOverLayer.SetActive(false);
         }
+        
     }
 
     public void ShowGameOverMenu()
@@ -123,6 +134,7 @@ public class UIManager : MonoBehaviour
         NoCoins.SetActive(false);
         sethighscore();
         Time.timeScale = 0;
+        Debug.Log("time freezed on gameovermenushow");
         //GameOverLayer.SetActive(true);
         StartCoroutine(ShowGameOverMenuIE());
     }
@@ -182,8 +194,10 @@ public class UIManager : MonoBehaviour
            /* AudioListener = GameObject.FindObjectOfType<AudioListener>().gameObject;
             AudioListener.SetActive(false);*/
             Time.timeScale = 0;
+            Debug.Log("time freezed on pause");
             PauseButton.SetActive(false);
             PauseMenu.SetActive(true);
+            Debug.Log("pause menu activated");
             GameOverLayer.SetActive(true);
         }
     }
@@ -191,8 +205,10 @@ public class UIManager : MonoBehaviour
     {
       
             Time.timeScale = 0;
+        Debug.Log("time freezed on pause with parameter");
             PauseButton.SetActive(false);
             PauseMenu.SetActive(true);
+            Debug.Log("pause menu activated");
             GameOverLayer.SetActive(true);
     }
 
@@ -233,17 +249,17 @@ public class UIManager : MonoBehaviour
         PauseMenu.SetActive(false);
     }
 
-        public void SoundToggle()
+    public void SoundToggle()
     {
         if(PlayerPrefs.GetInt("Soundpref")==1)
         {
             PlayerPrefs.SetInt("Soundpref", 0);
-            SoundOnOffText.text = "Sound : off";
+            SoundOnOffText.text = "Sound : Off";
         }
         else if (PlayerPrefs.GetInt("Soundpref") == 0)
         {
             PlayerPrefs.SetInt("Soundpref", 1);
-            SoundOnOffText.text = "Sound : on";
+            SoundOnOffText.text = "Sound : On";
         }
 
         var objs = FindObjectsOfType<AudioSource>();
@@ -271,6 +287,14 @@ public class UIManager : MonoBehaviour
         sethighscore();
         Resumer321.SetActive(false);
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+
+
+        //PlayerPrefs.SetInt("Counter", PlayerPrefs.GetInt("Counter") + 1);
+        //if(PlayerPrefs.GetInt("Counter")%5==0)
+        //{
+        //    AppodealManager.AppodealInstance.ShowRewardedAd();
+        //}
+        AppodealManager.AppodealInstance.ShowInterstetialAd();
     }
 
     public void Revive()
@@ -286,6 +310,16 @@ public class UIManager : MonoBehaviour
         {
             NoCoins.SetActive(true);
         }
+
+        //write function for multiple clicks here
+        ReviveButton.GetComponent<Button>().interactable = false;
+        StartCoroutine(ReviveButtonSingleClick());
+    }
+
+    IEnumerator ReviveButtonSingleClick()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+        ReviveButton.GetComponent<Button>().interactable = true;
     }
 
     public void AdnRevive()
@@ -307,6 +341,10 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1.0f;
         CloseGameOverMenu(1);
         SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
+
+
+        AppodealManager.AppodealInstance.ShowInterstetialAd();
+       
     }
 
     void setScoreboard()
@@ -340,7 +378,7 @@ public class UIManager : MonoBehaviour
 
        if (SceneManager.GetActiveScene().name != "MainMenu")
         {
-            Pause();
+            //Pause();
         }
 
    

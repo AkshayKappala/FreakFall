@@ -45,6 +45,7 @@ public class GamePlayController : MonoBehaviour
 
     public  void Start()
     {
+
         UIManager.Instance.Resumer321.SetActive(true);
         UIManager.Instance.LoadingScreen0.SetActive(false);
         UIManager.Instance.BoostButton.SetActive(true);

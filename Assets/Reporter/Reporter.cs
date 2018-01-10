@@ -2045,7 +2045,7 @@ public class Reporter : MonoBehaviour {
 		
 		if( !string.IsNullOrEmpty( www.error ) )
 		{
-			Debug.LogError( www.error );
+			//Debug.LogError( www.error );
 		}
 		else 
 		{
