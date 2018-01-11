@@ -97,6 +97,8 @@ public class GooglePlayGamesManager : MonoBehaviour {
         else
         {
             // Failed to get Leaderboard
+            Debug.Log("Failed to get Leaderboard");
+            Authenticate();
         }
 
     }

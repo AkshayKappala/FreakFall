@@ -69,11 +69,11 @@ public class GamePlayController : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("Soundpref") == 1)
         {
-            UIManager.Instance.SoundOnOffText.text = "Sound : on";
+            UIManager.Instance.SoundOnOffText.text = "Sound : On";
         }
         else if (PlayerPrefs.GetInt("Soundpref") == 0)
         {
-            UIManager.Instance.SoundOnOffText.text = "Sound : off";
+            UIManager.Instance.SoundOnOffText.text = "Sound : Off";
         }
     }
 
