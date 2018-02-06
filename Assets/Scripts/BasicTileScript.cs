@@ -27,7 +27,7 @@ public class BasicTileScript : MonoBehaviour
     }
     private void Start()
     {
-        StartVelocity = 7;
+        StartVelocity = 9;
         startvelocityref = StartVelocity;
         //float position = this.gameObject.transform.position.x;
     }
